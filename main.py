@@ -1,23 +1,29 @@
-import re
-from lib.api import YouTube
-from fastapi import FastAPI
+import re, requests, json, random
+from typing import Optional
+from lib.api import YouTube as YT
+from fastapi import FastAPI, APIRouter, HTTPException, Request
 
-app = FastAPI()
+APP = FastAPI(title="Free APIs for human",
+              version="0.1.0",
+              openapi_url="/openapi.json")
+ROUTER = APIRouter()
 
-@app.get("/")
-def root() -> dict:
-    return {"message":"read tutorials on https://facebook.com/sndyarz"}
+@ROUTER.get("/", status_code=200)
+def root(request: Request) -> dict:
+    return {"detail":"For tutorials, visit  https://facebook.com/arzhavz"}
 
-@app.get("/youtube")
-def youtube(url: str) -> dict:
-    if not url:
-        return {"message":"Invalid URL!"}
-    return YouTube(url)
+@ROUTER.get("/youtube", status_code=200)
+def YouTube(url: Optional[str] = None) -> dict:
+    if not url or not re.findall("youtu.be|youtube.com/watch", url):
+        raise HTTPException(status_code=404, detail="Invalid url!")
+    return YT(url)
 
-@app.get("/{pages}")
-def validate() -> dict:
-    return {"message":"page not found!"}
+@ROUTER.get("/{page}", status_code=200)
+def validate():
+    return {"detail":"page not found"}
 
-if __name__ == __name__:
+APP.include_router(ROUTER)
+
+if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=2006)
+    uvicorn.run(APP, host="127.0.0.1", port=2006)
