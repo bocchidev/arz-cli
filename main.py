@@ -11,7 +11,12 @@ ROUTER = APIRouter()
 
 @ROUTER.get("/", status_code=200)
 def root(request: Request) -> dict:
-    return {"detail":"For tutorials, visit  https://facebook.com/arzhavz"}
+    return {
+        "author" : "Sandy Cinta Gawr Gura",
+        "status" : 200,
+        "detail" : "WAKU WAKU",
+        "message" : "Open /docs to view docs"
+    }
 
 @ROUTER.get("/youtube", status_code=200, response_model=yt_schema)
 def YouTube(url: Optional[str] = None) -> dict:
