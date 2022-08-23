@@ -2,7 +2,7 @@
 # I LOVE GURA
 # I LOVE GURA
 
-import requests, re, json
+import requests, re, json, zippyshare_downloader as zippy
 from pytube import YouTube as yt
 from hurry.filesize import size, alternative
 from bs4 import BeautifulSoup as bs
@@ -66,9 +66,28 @@ def YouTube(url) -> dict:
             }
         }
         return results
-    except:
-        return log["exception"]
+    except Exception as e:
+        raise e
 
+def Zippyshare(url) -> dict:
+    if not re.search("zippyshare", url):
+        return log["invalid_url"]
+    try:
+        base = zippy.get_info(url)
+        if not base["download_url"]:
+            return {"detail":"URL not found!"}
+        results = {
+            "author" : author,
+            "status" : 200,
+            "title" : base["name_file"],
+            "size" : base["size"],
+            "date_upload" : base["date_upload"],
+            "url" : base["download_url"]
+        }
+        return results
+    except Exception as e:
+        raise e
+        
 # I LOVE GURA
 # I LOVE GURA
 # I LOVE GURA
