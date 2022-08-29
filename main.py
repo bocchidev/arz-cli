@@ -1,7 +1,7 @@
 import re, requests, json, random
 from typing import Optional
-from lib.api import YouTube as YT, Zippyshare as Z
-from lib.schema import yt_schema, zippy_schema
+from lib.api import YouTube as YT
+from lib.schema import yt_schema
 from fastapi import FastAPI, APIRouter, HTTPException, Request
 
 APP = FastAPI(title="Free APIs for human",
@@ -24,11 +24,11 @@ def YouTube(url: Optional[str] = None) -> dict:
         raise HTTPException(status_code=404, detail="Invalid url!")
     return YT(url)
 
-@ROUTER.get("/zippyshare", status_code=200, response_model=zippy_schema)
-def ZippyShare(url: Optional[str] = None) -> dict:
-    if not url or not re.findall("zippyshare", url):
+@ROUTER.get("/ytinfo", status_code=200)
+def YouTube_GetVideoInfo(url: Optional[str] = None) -> dict:
+    if not url or not re.findall("youtu.be|youtube.com/watch", url):
         raise HTTPException(status_code=404, detail="Invalid url!")
-    return Z(url)
+    return YT(url, "all")
 
 @ROUTER.get("/{page}", status_code=200)
 def validate():

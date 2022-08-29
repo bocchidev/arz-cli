@@ -36,22 +36,3 @@ class yt_schema(BaseModel):
             }
         }
         
-class zippy_schema(BaseModel):
-    author: str
-    status: int
-    title: str
-    size: str
-    date_upload: str
-    url: HttpUrl
-        
-    class Config:
-        schema_extra = {
-            "example" : {
-                "author" : "Sandy Sayang Gawr Gura",
-                "status" : 200,
-                "title" : "Judul file",
-                "size" : "Ukuran file",
-                "date_upload" : "Waktu upload",
-                "url" : "URL unduhan"
-            }
-        }
