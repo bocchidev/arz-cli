@@ -3,13 +3,13 @@
 ## YouTube Downloader.
 ## Semua file unduhan akan disimpan di folder /tmp.
 ## Khusus untuk audio, menggunakan software ffmpeg
-## Harap install ffmpeg dahulu di https://ffmpeg.org
+## Harap install ffmpeg dahulu di https://ffmpeg.org.
 ## 
 ## => Support: https://trakteer.id/arzhavz/tip
 ## => My website: https://arzxh.deta.sh
 ## => @Sandy Pratama
 ##
-####################
+########################################
 
 import base64, codecs
 magic = 'IyMjIyMjIyMjIyMjIyMjIyMjIyMgSW5mb3JtYXRpb24KIyMKIyMgWW91VHViZSBEb3dubG9hZGVyLgojIyBTZW11YSBmaWxlIHVuZHVoYW4gYWthbiBkaXNpbXBhbiBkaSBmb2xkZXIgL3RtcC4KIyMgS2h1c3VzIHVudHVrIGF1ZGlvLCBtZW5nZ3VuYWthbiBzb2Z0d2FyZSBmZm1wZWcKIyMgSGFyYXAgaW5zdGFsbCBmZm1wZWcgZGFodWx1IGRpIGh0dHBzOi8vZmZtcGVnLm9yZwojIyAKIyMgPT4gU3VwcG9ydDogaHR0cHM6Ly90cmFrdGVlci5pZC9hcnpoYXZ6L3RpcAojIyA9PiBNeSB3ZWJzaXRlOiBodHRwczovL2FyenhoLmRldGEuc2gKIyMgPT4gQFNhbmR5IFByYXRhbWEKIyMKIyMjIyMjIyMjIyMjIyMjIyMjIyMKCmltcG9ydCByZSwgb3MKZnJvbSB1cmxsaWIucGFyc2UgaW1wb3J0IHF1b3RlLCB1bnF1b3RlCmZyb20gcHl0dWJlLmNsaSBpbXBvcnQgb25fcHJvZ3Jlc3MKZnJvbSBweXR1YmUgaW1wb3J0IFlvdVR1YmUKZnJvbSBkYXRldGltZSBpbXBvcnQgZGF0ZXRpbWUKCk5PVyA9IHN0cihkYXRldGltZS5ub3coKSkKCkxPR19NRVNTQUdFID0gIiIiCiMjIyMjIyMjIyMjIyMjIyMjI'

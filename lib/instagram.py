@@ -8,7 +8,7 @@
 ## => My website: https://arzxh.deta.sh
 ## => @Sandy Pratama
 ##
-####################
+########################################
 
 
 import base64, codecs
