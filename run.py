@@ -4,9 +4,6 @@
 ## Ini adalah program sederhana yang akan membantu kamu
 ## Harap teliti saat mengedit agar tidak terjadi error
 ## Terimakasih telah berkunjung
-##
-## Script ini saya tulis serapi mungkin
-## Agar semua orang bisa mengembangkannya.
 ## 
 ## => Support: https://trakteer.id/arzhavz/tip
 ## => My website: https://arzxh.deta.sh
