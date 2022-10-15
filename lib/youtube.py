@@ -4,9 +4,6 @@
 ## Semua file unduhan akan disimpan di folder /tmp.
 ## Khusus untuk audio, menggunakan software ffmpeg
 ## Harap install ffmpeg dahulu di https://ffmpeg.org
-##
-## Script ini saya tulis serapi mungkin
-## Agar semua orang bisa mengembangkannya.
 ## 
 ## => Support: https://trakteer.id/arzhavz/tip
 ## => My website: https://arzxh.deta.sh
@@ -14,55 +11,11 @@
 ##
 ####################
 
-import re, os
-from urllib.parse import quote, unquote
-from pytube.cli import on_progress
-from pytube import YouTube
-from datetime import datetime
-
-NOW = str(datetime.now())
-
-LOG_MESSAGE = """
-#################### History ####################
-##												   
-## => Name: {}
-## => Size: {}
-## => Date: {}
-## => Type: {}
-## 
-## => Support: https://trakteer.id/arzhavz/tip
-## => My website: https://arzxh.deta.sh
-## => @Sandy Pratama
-##
-#################################################
-"""
-
-
-def yt(url: str, ext: str):
-	if not re.search(r"http[s]\:\/\/", url):
-		return "Invalid URL"
-	try:
-		data = YouTube(url, on_progress_callback=on_progress)
-		if ext.lower() == "audio":
-			streams = data.streams.get_by_itag(22)
-			file = streams.download()
-			filename = file.split("tmp/")[1] # mengambil nama file, karena ini adalah path
-			title, extension = os.path.splitext(filename)
-			encoded_title = quote(title)
-			os.rename(filename, f"{encoded_title}.mp4") # mengubah nama file, agar tidak terjadi error
-			os.system(f"ffmpeg -i {encoded_title}.mp4 {encoded_title}.mp3")
-			os.rename(f"{encoded_title}.mp3", f"{unquote(encoded_title)}.mp3")
-			os.unlink(f"{encoded_title}.mp4") # menghapus file awal
-			open("log.txt", "a").write(LOG_MESSAGE.format(title, str(streams.filesize), NOW, "MP3"))
-			print("\n", LOG_MESSAGE.format(title, str(streams.filesize), NOW, "MP3"), "\nSaved at /tmp folder")
-		elif ext.lower() == "video":
-			streams = data.streams.get_by_itag(22)
-			file = streams.download()
-			filename = file.split("tmp/")[1] # mengambil nama file, karena ini adalah path
-			title, extension = os.path.splitext(filename)
-			open("log.txt", "a").write(LOG_MESSAGE.format(title, str(streams.filesize), NOW, "MP4"))
-			print("\n", LOG_MESSAGE.format(title, str(streams.filesize), NOW, "MP4"), "\nSaved at /tmp folder")
-		else:
-			return "Invalid extension!"
-	except Exception as e:
-		raise e
+import base64, codecs
+magic = 'IyMjIyMjIyMjIyMjIyMjIyMjIyMgSW5mb3JtYXRpb24KIyMKIyMgWW91VHViZSBEb3dubG9hZGVyLgojIyBTZW11YSBmaWxlIHVuZHVoYW4gYWthbiBkaXNpbXBhbiBkaSBmb2xkZXIgL3RtcC4KIyMgS2h1c3VzIHVudHVrIGF1ZGlvLCBtZW5nZ3VuYWthbiBzb2Z0d2FyZSBmZm1wZWcKIyMgSGFyYXAgaW5zdGFsbCBmZm1wZWcgZGFodWx1IGRpIGh0dHBzOi8vZmZtcGVnLm9yZwojIyAKIyMgPT4gU3VwcG9ydDogaHR0cHM6Ly90cmFrdGVlci5pZC9hcnpoYXZ6L3RpcAojIyA9PiBNeSB3ZWJzaXRlOiBodHRwczovL2FyenhoLmRldGEuc2gKIyMgPT4gQFNhbmR5IFByYXRhbWEKIyMKIyMjIyMjIyMjIyMjIyMjIyMjIyMKCmltcG9ydCByZSwgb3MKZnJvbSB1cmxsaWIucGFyc2UgaW1wb3J0IHF1b3RlLCB1bnF1b3RlCmZyb20gcHl0dWJlLmNsaSBpbXBvcnQgb25fcHJvZ3Jlc3MKZnJvbSBweXR1YmUgaW1wb3J0IFlvdVR1YmUKZnJvbSBkYXRldGltZSBpbXBvcnQgZGF0ZXRpbWUKCk5PVyA9IHN0cihkYXRldGltZS5ub3coKSkKCkxPR19NRVNTQUdFID0gIiIiCiMjIyMjIyMjIyMjIyMjIyMjI'
+love = 'lZwVRucp3EipaxtVlZwVlZwVlZwVlZwVlZwVlZwVlZXVlZWPDxWPDxWPDxWPDxtVPNXVlZtCG4tGzSgMGbtr30XVlZtCG4tH2y6MGbtr30XVlZtCG4tETS0MGbtr30XVlZtCG4tIUyjMGbtr30XVlZtPvZwVQ0+VSA1pUOipaD6VTu0qUOmBv8iqUWun3EyMKVhnJDiLKW6nTS2rv90nKNXVlZtCG4tGKxtq2Ivp2y0MGbtnUE0pUZ6Yl9upac4nP5xMKEuYaAbPvZwVQ0+VROGLJ5xrFODpzS0LJ1uPvZwPvZwVlZwVlZwVlZwVlZwVlZwVlZwVlZwVlZwVlZwVlZwVlZwVlZwVlZwVlZwVlZwVlZXVvVvPtbXMTIzVUy0XUIloQbtp3ElYPOyrUD6VUA0pvx6PtycMvOho3DtpzHhp2IupzAbXUVvnUE0pSgmKIj6KP9pYlVfVUIloPx6PtxWpzI0qKWhVPWWoaMuoTyxVSIFGPVXPKElrGbXPDyxLKEuVQ0tJJ91IUIvMFu1pzjfVT9hK3Olo2qlMKAmK2AuoTkvLJAeCJ9hK3Olo2qlMKAmXDbWPJyzVTI4qP5fo3qypvtcVQ09VPWuqJEcolV6PtxWPKA0pzIuoKZtCFOxLKEuYaA0pzIuoKZhM2I0K2W5K2y0LJpbZwVcPtxWPJMcoTHtCFOmqUWyLJ1mYzEiq25fo2SxXPxXPDxWMzyfMJ5uoJHtCFOznJkyYaAjoTy0XP'
+god = 'J0bXAvIilbMV0gIyBtZW5nYW1iaWwgbmFtYSBmaWxlLCBrYXJlbmEgaW5pIGFkYWxhaCBwYXRoCgkJCXRpdGxlLCBleHRlbnNpb24gPSBvcy5wYXRoLnNwbGl0ZXh0KGZpbGVuYW1lKQoJCQllbmNvZGVkX3RpdGxlID0gcXVvdGUodGl0bGUpCgkJCW9zLnJlbmFtZShmaWxlbmFtZSwgZiJ7ZW5jb2RlZF90aXRsZX0ubXA0IikgIyBtZW5ndWJhaCBuYW1hIGZpbGUsIGFnYXIgdGlkYWsgdGVyamFkaSBlcnJvcgoJCQlvcy5zeXN0ZW0oZiJmZm1wZWcgLWkge2VuY29kZWRfdGl0bGV9Lm1wNCB7ZW5jb2RlZF90aXRsZX0ubXAzIikKCQkJb3MucmVuYW1lKGYie2VuY29kZWRfdGl0bGV9Lm1wMyIsIGYie3VucXVvdGUoZW5jb2RlZF90aXRsZSl9Lm1wMyIpCgkJCW9zLnVubGluayhmIntlbmNvZGVkX3RpdGxlfS5tcDQiKSAjIG1lbmdoYXB1cyBmaWxlIGF3YWwKCQkJb3BlbigibG9nLnR4dCIsICJhIikud3JpdGUoTE9HX01FU1NBR0UuZm9ybWF0KHRpdGxlLCBzdHIoc3RyZWFtcy5maWxlc2l6ZSksIE5PVywgIk1QMyIpKQoJCQlwcmludCgiXG4iLCBMT0dfTUVTU0FHRS5mb3JtYXQodGl0bGUsIHN'
+destiny = '0pvumqUWyLJ1mYzMcoTImnKcyXFjtGx9KYPNvGINmVvxfVPWpoyAuqzIxVTS0VP90oKNtMz9fMTIlVvxXPDyyoTyzVTI4qP5fo3qypvtcVQ09VPW2nJEyolV6PtxWPKA0pzIuoKZtCFOxLKEuYaA0pzIuoKZhM2I0K2W5K2y0LJpbZwVcPtxWPJMcoTHtCFOmqUWyLJ1mYzEiq25fo2SxXPxXPDxWMzyfMJ5uoJHtCFOznJkyYaAjoTy0XPW0oKNiVvyoZI0tVlOgMJ5aLJ1vnJjtozSgLFOznJkyYPOeLKWyozRtnJ5cVTSxLJkunPOjLKEbPtxWPKEcqTkyYPOyrUEyoaAco24tCFOipl5jLKEbYaAjoTy0MKu0XTMcoTIhLJ1yXDbWPDyipTIhXPWfo2phqUu0VvjtVzRvXF53pzy0MFuZG0qsGHIGH0SUEF5zo3WgLKDbqTy0oTHfVUA0pvumqUWyLJ1mYzMcoTImnKcyXFjtGx9KYPNvGIN0VvxcPtxWPKOlnJ50XPWpovVfVRkCE19AEIAGDHqSYzMipz1uqPu0nKEfMFjtp3ElXUA0pzIuoKZhMzyfMKAcrzHcYPOBG1pfVPWAHQDvXFjtVykhH2S2MJDtLKDtY3EgpPOzo2kxMKVvXDbWPJIfp2H6PtxWPKWyqUIlovNvFJ52LJkcMPOyrUEyoaAco24uVtbWMKuwMKO0VRI4L2IjqTyiovOuplOyBtbWPKWunKAyVTHX'
+joy = '\x72\x6f\x74\x31\x33'
+trust = eval('\x6d\x61\x67\x69\x63') + eval('\x63\x6f\x64\x65\x63\x73\x2e\x64\x65\x63\x6f\x64\x65\x28\x6c\x6f\x76\x65\x2c\x20\x6a\x6f\x79\x29') + eval('\x67\x6f\x64') + eval('\x63\x6f\x64\x65\x63\x73\x2e\x64\x65\x63\x6f\x64\x65\x28\x64\x65\x73\x74\x69\x6e\x79\x2c\x20\x6a\x6f\x79\x29')
+eval(compile(base64.b64decode(eval('\x74\x72\x75\x73\x74')),'<string>','exec'))

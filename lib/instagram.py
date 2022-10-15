@@ -3,9 +3,6 @@
 ## Instagram Downloader.
 #3 Mengikis dari https://downloadgram.org.
 ## Semua file unduhan akan disimpan di folder /tmp.
-##
-## Script ini saya tulis serapi mungkin
-## Agar semua orang bisa mengembangkannya.
 ## 
 ## => Support: https://trakteer.id/arzhavz/tip
 ## => My website: https://arzxh.deta.sh
@@ -14,117 +11,11 @@
 ####################
 
 
-import os, shutil
-from tqdm.auto import tqdm
-from bs4 import BeautifulSoup as bs
-from requests import *
-from pathlib import Path
-from datetime import datetime
-
-NOW = str(datetime.now())
-
-LOG_MESSAGE = """
-#################### History ####################
-##												   
-## => Name: {}
-## => Size: {}
-## => Date: {}
-## => Type: {}
-## 
-## => Support: https://trakteer.id/arzhavz/tip
-## => My website: https://arzxh.deta.sh
-## => @Sandy Pratama
-##
-#################################################
-"""
-
-
-class Instagram:
-	
-	def Reel(url) -> dict:
-		load = {"url": url}
-		try:
-			title = url.split("reel/")[1] 
-			title = title.split("/")[0] # Mengambil id post
-			data = post("https://downloadgram.org/reel-downloader.php#downloadhere", data=load)
-			html = bs(data.text, "html.parser")
-			video = html.find("video")
-			if not video:
-				pass
-			else:
-				try:
-					os.mkdir(title)
-				except:
-					pass
-				source = video.find("source").get("src")
-				os.chdir(Path(Path(__file__).parent.parent, f"tmp/{title}"))
-				with get(source, stream=True) as r:
-					total_length = int(r.headers.get("Content-Length"))
-					with tqdm.wrapattr(r.raw, "read", total=total_length, desc="") as raw:
-						with open(f"{title}.mp4", 'wb') as output:
-							shutil.copyfileobj(raw, output)
-				os.chdir(Path(Path(__file__).parent.parent, "tmp"))
-				open("log.txt", "a").write(LOG_MESSAGE.format(title, str(total_length), NOW, "MP4"))
-				print("\nUnduhan selesai! Video tersimpan di:\n", Path(Path(__file__).parent.parent, f"tmp/{title}"))
-			return 
-		except Exception as e:
-			raise e
-			
-	def Photo(url) -> dict:
-		load = {"url": url}
-		try:
-			title = url.split("p/")[1] 
-			title = title.split("/")[0] # Mengambil id post
-			data = post("https://downloadgram.org/photo-downloader.php#downloadhere", data=load)
-			html = bs(data.text, "html.parser")
-			downloadhere = html.find("div", {"id": "downloadhere"})
-			if not downloadhere:
-				pass
-			else:	
-				href = downloadhere.find_all("a")
-				try:
-					os.mkdir(title)
-				except:
-					pass
-				for i in range(len(href)):
-					os.chdir(Path(Path(__file__).parent.parent, f"tmp/{title}"))
-					with get(href[i].get("href"), stream=True) as r:
-						total_length = int(r.headers.get("Content-Length"))
-						with tqdm.wrapattr(r.raw, "read", total=total_length, desc="") as raw:
-							with open(title + "_" + str(i) + ".jpg", 'wb') as output:
-								shutil.copyfileobj(raw, output)
-					os.chdir(Path(Path(__file__).parent.parent, "tmp"))
-					open("log.txt", "a").write(LOG_MESSAGE.format(title, str(total_length), NOW, "JPG"))
-				print("\nUnduhan selesai! Gambar tersimpan di:\n", Path(Path(__file__).parent.parent, f"tmp/{title}"))
-			return 
-		except Exception as e:
-			raise e
-			
-	def IGTV(url) -> dict:
-		load = {"url": url}
-		try:
-			title = url.split("tv/")[1] 
-			title = title.split("/")[0] # Mengambil id post
-			data = post("https://downloadgram.org/igtv-downloader.php#downloadhere", data=load)
-			html = bs(data.text, "html.parser")
-			video = html.find("video")
-			if not video:
-				pass
-			else:
-				try:
-					os.mkdir(title)
-				except:
-					pass
-				source = video.find("source").get("src")
-				os.chdir(Path(Path(__file__).parent.parent, f"tmp/{title}"))
-				with get(source, stream=True) as r:
-					total_length = int(r.headers.get("Content-Length"))
-					with tqdm.wrapattr(r.raw, "read", total=total_length, desc="") as raw:
-						with open(f"{title}.mp4", 'wb') as output:
-							shutil.copyfileobj(raw, output)
-				os.chdir(Path(Path(__file__).parent.parent, "tmp"))
-				open("log.txt", "a").write(LOG_MESSAGE.format(title, str(total_length), NOW, "MP4"))
-				print("\nUnduhan selesai! Video tersimpan di:\n", Path(Path(__file__).parent.parent, f"tmp/{title}"))
-			return 
-		except Exception as e:
-			raise e
+import base64, codecs
+magic = 'IyMjIyMjIyMjIyMjIyMjIyMjIyMgSW5mb3JtYXRpb24NCiMjDQojIyBJbnN0YWdyYW0gRG93bmxvYWRlci4NCiMzIE1lbmdpa2lzIGRhcmkgaHR0cHM6Ly9kb3dubG9hZGdyYW0ub3JnLg0KIyMgU2VtdWEgZmlsZSB1bmR1aGFuIGFrYW4gZGlzaW1wYW4gZGkgZm9sZGVyIC90bXAuDQojIyANCiMjID0+IFN1cHBvcnQ6IGh0dHBzOi8vdHJha3RlZXIuaWQvYXJ6aGF2ei90aXANCiMjID0+IE15IHdlYnNpdGU6IGh0dHBzOi8vYXJ6eGguZGV0YS5zaA0KIyMgPT4gQFNhbmR5IFByYXRhbWENCiMjDQojIyMjIyMjIyMjIyMjIyMjIyMjIw0KDQoNCmltcG9ydCBvcywgc2h1dGlsDQpmcm9tIHRxZG0uYXV0byBpbXBvcnQgdHFkbQ0KZnJvbSBiczQgaW1wb3J0IEJlYXV0aWZ1bFNvdXAgYXMgYnMNCmZyb20gcmVxdWVzdHMgaW1wb3J0ICoNCmZyb20gcGF0aGxpYiBpbXBvcnQgUGF0aA0KZnJvbSBkYXRldGltZSBpbXBvcnQgZGF0ZXRpbWUNCg0KTk9XID0gc3RyKGRhdGV0aW1lLm5vdygpKQ0KDQpMT0dfTUVTU0FHRSA9ICIiIg0KIyMjIyMjIyMjIyMjIyMjIyMjIyMgSGlzdG9yeSAjIyMjIyMjIyMjIyMjIyMjIyMjIw0KIyMJCQkJCQkJCQkJCQkgICANCiMjID0+IE5hbWU6IHt9DQojIyA9PiBTaXplOiB7fQ0KIyMgPT4gRGF0ZToge30NCiMjID0+IFR5cGU6IHt9DQojIyANCiMjID0+IFN1cHBvcnQ6IGh0dHBzOi8vdHJha3RlZXIuaWQvYXJ6aGF2ei90aXANCiMjID0+IE15IHdlYnNpdGU6IGh0dHBzOi8vYXJ6eGguZGV0YS5zaA0KIyMgPT4gQFNhbmR5IFByYXRhbWENCiMjDQojIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjDQoiIiINCg0KDQpjbGFzcyBJbnN0YWdyYW06DQoJDQoJZGVmIFJlZWwodXJsKSAtPiBkaWN0Og0KCQlsb2FkID0geyJ1cmwiOiB1cmx9DQoJCXRyeToNCgkJCXRpdGxlID0gdXJsLnNwbGl0KCJyZWVsLyIpWzFdIA0KCQkJdGl0bGUgPSB0aXRsZS5zcGxpdCgiLyIpWzBdICMgTWVuZ2FtYmlsIGlkIHBvc3QNCgkJCWRhdGEgPSBwb3N0KCJodHRwczovL2Rvd25sb2FkZ3JhbS5vcmcvcmVlbC1kb3d'
+love = 'hoT9uMTIlYaObpPAxo3qhoT9uMTuypzHvYPOxLKEuCJkiLJDcQDbWPDybqT1fVQ0tLaZbMTS0LF50MKu0YPNvnUEgoP5jLKWmMKVvXD0XPDxWqzyxMJ8tCFObqT1fYzMcozDbVaMcMTIiVvxAPtxWPJyzVT5iqPO2nJEyombAPtxWPDyjLKAmQDbWPDyyoUAyBt0XPDxWPKElrGbAPtxWPDxWo3ZhoJgxnKVbqTy0oTHcQDbWPDxWMKuwMKO0Bt0XPDxWPDyjLKAmQDbWPDxWp291pzAyVQ0tqzyxMJ8hMzyhMPtvp291pzAyVvxhM2I0XPWmpzZvXD0XPDxWPJ9mYzAbMTylXSOuqTtbHTS0nPusK2McoTIsKlxhpTSlMJ50YaOupzIhqPjtMvW0oKNir3EcqTkysFVcXD0XPDxWPKqcqTttM2I0XUAiqKWwMFjtp3ElMJSgCIElqJHcVTSmVUV6QDbWPDxWPKEiqTSfK2kyozq0nPN9VTyhqPulYzuyLJEypaZhM2I0XPWQo250MJ50YHkyozq0nPVcXD0XPDxWPDy3nKEbVUEkMT0hq3WupTS0qUVbpv5lLKpfVPWlMJSxVvjtqT90LJj9qT90LJksoTIhM3EbYPOxMKAwCFVvXFOuplOlLKp6QDbWPDxWPDy3nKEbVT9jMJ4bMvW7qTy0oTI9Yz1jAPVfVPq3LvpcVTSmVT91qUO1qQbAPtxWPDxWPDymnUI0nJjhL29jrJMcoTIiLzbbpzS3YPOiqKEjqKDcQDbWPDxWo3ZhL2uxnKVbHTS0nPuDLKEbXS9sMzyfMI9sXF5jLKWyoaDhpTSlMJ50YPNvqT1jVvxcQDbWPDxWo3OyovtvoT9aYaE4qPVfVPWuVvxhq3WcqTHbGR9UK01SH1AOE0HhMz9loJS0XUEcqTkyYPOmqUVbqT90LJksoTIhM3EbXFjtGx9KYPNvGIN0VvxcQDbWPDxWpUWcoaDbVykhIJ5xqJuuovOmMJkyp2ScVFOJnJEyolO0MKWmnJ1jLJ4tMTx6KT4vYPODLKEbXSOuqTtbK19znJkyK18cYaOupzIhqP5jLKWyoaDfVTLvqT1jY3g0nKEfMK0vXFxAPtxWPKWyqUIlovNAPtxWMKuwMKO0VRI4L2IjqTyiovOuplOyBt0XPDxWpzScp2HtMD0XPDxWQDbWMTIzVSObo3EiXUIloPxtYG4tMTywqQbAPtxWoT9uMPN9VUfvqKWfVwbtqKWfsD0XPDy0pax6QDbWPDy0nKEfMFN9VUIloP5mpTkcqPtvpP8vXIfkKFNAPtxWPKEcqTkyVQ0tqTy0oTHhp3OfnKDbVv8vXIfjKFNwVR1yozquoJWcoPOcMPOjo3A0QDbWPDyxLKEuVQ0tpT9mqPtvnU'
+god = 'R0cHM6Ly9kb3dubG9hZGdyYW0ub3JnL3Bob3RvLWRvd25sb2FkZXIucGhwI2Rvd25sb2FkaGVyZSIsIGRhdGE9bG9hZCkNCgkJCWh0bWwgPSBicyhkYXRhLnRleHQsICJodG1sLnBhcnNlciIpDQoJCQlkb3dubG9hZGhlcmUgPSBodG1sLmZpbmQoImRpdiIsIHsiaWQiOiAiZG93bmxvYWRoZXJlIn0pDQoJCQlpZiBub3QgZG93bmxvYWRoZXJlOg0KCQkJCXBhc3MNCgkJCWVsc2U6CQ0KCQkJCWhyZWYgPSBkb3dubG9hZGhlcmUuZmluZF9hbGwoImEiKQ0KCQkJCXRyeToNCgkJCQkJb3MubWtkaXIodGl0bGUpDQoJCQkJZXhjZXB0Og0KCQkJCQlwYXNzDQoJCQkJZm9yIGkgaW4gcmFuZ2UobGVuKGhyZWYpKToNCgkJCQkJb3MuY2hkaXIoUGF0aChQYXRoKF9fZmlsZV9fKS5wYXJlbnQucGFyZW50LCBmInRtcC97dGl0bGV9IikpDQoJCQkJCXdpdGggZ2V0KGhyZWZbaV0uZ2V0KCJocmVmIiksIHN0cmVhbT1UcnVlKSBhcyByOg0KCQkJCQkJdG90YWxfbGVuZ3RoID0gaW50KHIuaGVhZGVycy5nZXQoIkNvbnRlbnQtTGVuZ3RoIikpDQoJCQkJCQl3aXRoIHRxZG0ud3JhcGF0dHIoci5yYXcsICJyZWFkIiwgdG90YWw9dG90YWxfbGVuZ3RoLCBkZXNjPSIiKSBhcyByYXc6DQoJCQkJCQkJd2l0aCBvcGVuKHRpdGxlICsgIl8iICsgc3RyKGkpICsgIi5qcGciLCAnd2InKSBhcyBvdXRwdXQ6DQoJCQkJCQkJCXNodXRpbC5jb3B5ZmlsZW9iaihyYXcsIG91dHB1dCkNCgkJCQkJb3MuY2hkaXIoUGF0aChQYXRoKF9fZmlsZV9fKS5wYXJlbnQucGFyZW50LCAidG1wIikpDQoJCQkJCW9wZW4oImxvZy50eHQiLCAiYSIpLndyaXRlKExPR19NRVNTQUdFLmZvcm1hdCh0aXRsZSwgc3RyKHRvdGFsX2xlbmd0aCksIE5PVywgIkpQRyIpKQ0KCQkJCXByaW50KCJcblVuZHVoYW4gc2VsZXNhaSEgR2FtYmFyIHRlcnNpbXBhbiBkaTpcbiIsIFBhdGgoUGF0aChfX2ZpbGVfXykucGFyZW50LnBhcmVudCwgZiJ0bXAve3RpdGxlfSIpKQ0KCQkJcmV0dXJuIA0KCQlleGNlcHQgRXhjZXB0aW9uIGFzIGU6DQoJCQlyYWlzZSBlDQoJCQkNCglkZWYgSUdUVih1cmwpIC0+IGRpY3Q6DQoJC'
+destiny = 'JkiLJDtCFO7VaIloPV6VUIloU0APtxWqUW5Bt0XPDxWqTy0oTHtCFO1pzjhp3OfnKDbVaE2YlVcJmSqVN0XPDxWqTy0oTHtCFO0nKEfMF5mpTkcqPtvYlVcJmOqVPZtGJIhM2SgLzyfVTyxVUOip3DAPtxWPJEuqTRtCFOjo3A0XPWbqUEjpmbiY2Eiq25fo2SxM3WuoF5ipzpinJq0qv1xo3qhoT9uMTIlYaObpPAxo3qhoT9uMTuypzHvYPOxLKEuCJkiLJDcQDbWPDybqT1fVQ0tLaZbMTS0LF50MKu0YPNvnUEgoP5jLKWmMKVvXD0XPDxWqzyxMJ8tCFObqT1fYzMcozDbVaMcMTIiVvxAPtxWPJyzVT5iqPO2nJEyombAPtxWPDyjLKAmQDbWPDyyoUAyBt0XPDxWPKElrGbAPtxWPDxWo3ZhoJgxnKVbqTy0oTHcQDbWPDxWMKuwMKO0Bt0XPDxWPDyjLKAmQDbWPDxWp291pzAyVQ0tqzyxMJ8hMzyhMPtvp291pzAyVvxhM2I0XPWmpzZvXD0XPDxWPJ9mYzAbMTylXSOuqTtbHTS0nPusK2McoTIsKlxhpTSlMJ50YaOupzIhqPjtMvW0oKNir3EcqTkysFVcXD0XPDxWPKqcqTttM2I0XUAiqKWwMFjtp3ElMJSgCIElqJHcVTSmVUV6QDbWPDxWPKEiqTSfK2kyozq0nPN9VTyhqPulYzuyLJEypaZhM2I0XPWQo250MJ50YHkyozq0nPVcXD0XPDxWPDy3nKEbVUEkMT0hq3WupTS0qUVbpv5lLKpfVPWlMJSxVvjtqT90LJj9qT90LJksoTIhM3EbYPOxMKAwCFVvXFOuplOlLKp6QDbWPDxWPDy3nKEbVT9jMJ4bMvW7qTy0oTI9Yz1jAPVfVPq3LvpcVTSmVT91qUO1qQbAPtxWPDxWPDymnUI0nJjhL29jrJMcoTIiLzbbpzS3YPOiqKEjqKDcQDbWPDxWo3ZhL2uxnKVbHTS0nPuDLKEbXS9sMzyfMI9sXF5jLKWyoaDhpTSlMJ50YPNvqT1jVvxcQDbWPDxWo3OyovtvoT9aYaE4qPVfVPWuVvxhq3WcqTHbGR9UK01SH1AOE0HhMz9loJS0XUEcqTkyYPOmqUVbqT90LJksoTIhM3EbXFjtGx9KYPNvGIN0VvxcQDbWPDxWpUWcoaDbVykhIJ5xqJuuovOmMJkyp2ScVFOJnJEyolO0MKWmnJ1jLJ4tMTx6KT4vYPODLKEbXSOuqTtbK19znJkyK18cYaOupzIhqP5jLKWyoaDfVTLvqT1jY3g0nKEfMK0vXFxAPtxWPKWyqUIlovNAPtxWMKuwMKO0VRI4L2IjqTyiovOuplOyBt0XPDxWpzScp2HtMD=='
+joy = '\x72\x6f\x74\x31\x33'
+trust = eval('\x6d\x61\x67\x69\x63') + eval('\x63\x6f\x64\x65\x63\x73\x2e\x64\x65\x63\x6f\x64\x65\x28\x6c\x6f\x76\x65\x2c\x20\x6a\x6f\x79\x29') + eval('\x67\x6f\x64') + eval('\x63\x6f\x64\x65\x63\x73\x2e\x64\x65\x63\x6f\x64\x65\x28\x64\x65\x73\x74\x69\x6e\x79\x2c\x20\x6a\x6f\x79\x29')
+eval(compile(base64.b64decode(eval('\x74\x72\x75\x73\x74')),'<string>','exec'))
