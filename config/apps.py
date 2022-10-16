@@ -1,8 +1,6 @@
 #################### Information
 ##
-## Semua config APPs.
-## Script ini saya tulis serapi mungkin
-## Agar semua orang bisa mengembangkannya.
+## Semua config APPs subcommand.
 ## 
 ## => Support: https://trakteer.id/arzhavz/tip
 ## => My website: https://arzxh.deta.sh
@@ -11,11 +9,8 @@
 ####################
 
 import typer, os
-from datetime import date
 from requests import *
 from pathlib import Path
-
-NOW = date.today().strftime("%d_%m_%Y")
 
 ########## YTDL Section ##########
 """
