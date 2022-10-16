@@ -13,8 +13,18 @@
 
 import typer
 from config.apps import YTDL, IGDL
+from lib.mediafire import Mediafire
 
 APP = typer.Typer(pretty_exceptions_enable=False)
+
+########## Commands Section ##########
+@APP.command()
+def mediafire(url: str):
+	"""
+	Mediafire downloader.
+	"""
+	Mediafire(url)
+######################################
 
 APP.add_typer(YTDL, name="ytdl", help="YouTube downloader")
 APP.add_typer(IGDL, name="igdl", help="Instagram downloader")
