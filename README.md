@@ -1,6 +1,5 @@
 # arz-cli
-Program sederhana yang mengijinkanmu mengunduh dari Instagram, Mediafire, dan YouTube.
-
+Program berbasis CLI yang memiliki beberapa fitur keren.
 # Tutorial termux:
 Update termux menggunakan:
 ```sh
@@ -29,29 +28,9 @@ git clone https://github.com/KurniawanIDX/arz-cli && cd arz-cli && python -m pip
 ```
 
 # Penggunaan
-Untuk mengunduh audio YouTube:
+Untuk detail bisa gunakan perintah berikut:
 ```sh
-python run.py ytdl audio https://youtube.com/
-```
-Untuk mengunduh video YouTube:
-```sh
-python run.py ytdl video https://youtube.com/
-```
-Untuk mengunduh video Instagram:
-```sh
-python run.py igdl igtv https://instagram.com/
-```
-Untuk mengunduh reel Instagram:
-```sh
-python run.py igdl reel https://instagram.com/
-```
-Untuk mengunduh foto Instagram:
-```sh
-python run.py igdl photo https://instagram.com/
-```
-Untuk mengunduh file Mediafire:
-```sh
-python run.py mediafire https://mediafire.com/
+python run.py --help
 ```
 
 Semua file unduhan akan berada di folder /tmp.

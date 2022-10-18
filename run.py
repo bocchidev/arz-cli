@@ -6,7 +6,7 @@
 ## Terimakasih telah berkunjung
 ## 
 ## => Support: https://trakteer.id/arzhavz/tip
-## => My website: https://arzxh.deta.sh
+## => My website: https://arzxh.deta.dev
 ## => @Sandy Pratama
 ##
 ####################
@@ -14,6 +14,7 @@
 import typer
 from config.apps import YTDL, IGDL
 from lib.mediafire import Mediafire
+from lib.zippyshare import Zippyshare
 
 APP = typer.Typer(pretty_exceptions_enable=False)
 
@@ -24,6 +25,13 @@ def mediafire(url: str):
 	Mediafire downloader.
 	"""
 	Mediafire(url)
+	
+@APP.command()
+def zippyshare(url: str):
+	"""
+	Zippyshare downloader.
+	"""
+	Zippyshare(url)
 ######################################
 
 APP.add_typer(YTDL, name="ytdl", help="YouTube downloader")

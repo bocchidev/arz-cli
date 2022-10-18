@@ -1,7 +1,21 @@
 ################## Information ##################
-##												   
-## Selamat datang di Gura-CLI					   
+##											   
 ## Ini akan berisi riwayat unduhan kamu
+## 
+## => Support: https://trakteer.id/arzhavz/tip
+## => My website: https://arzxh.deta.dev
+## => @Sandy Pratama
+##
+#################################################
+
+
+#################### History ####################
+##
+## => Name: NEXT COLOR PLANET  星街すいせい(official)
+## => Size: 25923856
+## => Date: 2022-10-16 11:10:17.104748
+## => Type: MP4
+## => Save: /e/Code/python/gura/tmp
 ## 
 ## => Support: https://trakteer.id/arzhavz/tip
 ## => My website: https://arzxh.deta.sh
@@ -9,3 +23,58 @@
 ##
 #################################################
 
+#################### History ####################
+##
+## => Name: GHOST  星街すいせい(official)
+## => Size: 19 MB
+## => Date: 2022-10-16 16:17:34.699318
+## => Type: MP4
+## => Save: /e/Code/python/gura/tmp
+## 
+## => Support: https://trakteer.id/arzhavz/tip
+## => My website: https://arzxh.deta.sh
+## => @Sandy Pratama
+##
+#################################################
+
+#################### History ####################
+##
+## => Name: MediaFire - Getting Started
+## => Size: 372 KB
+## => Date: 2022-10-16 17:06:49.012296
+## => Type: .pdf
+## => Save: /e/Code/python/gura/tmp/MediaFire - Getting Started
+## 
+## => Support: https://trakteer.id/arzhavz/tip
+## => My website: https://arzxh.deta.sh
+## => @Sandy Pratama
+##
+#################################################
+
+#################### History ####################
+##
+## => Name: MediaFire - Getting Started
+## => Size: 372 KB
+## => Date: 2022-10-16 17:10:02.737376
+## => Type: PDF
+## => Save: /e/Code/python/gura/tmp
+## 
+## => Support: https://trakteer.id/arzhavz/tip
+## => My website: https://arzxh.deta.sh
+## => @Sandy Pratama
+##
+#################################################
+
+#################### History ####################
+##
+## => Name: Otakudesu.net_KnjOkrmsh.S2--12_End_480p.mp4
+## => Size: 50 MB
+## => Date: 2022-10-18 11:28:18.853326
+## => Type: MP4
+## => Save: /e/Code/python/gura/tmp
+## 
+## => Support: https://trakteer.id/arzhavz/tip
+## => My website: https://arzxh.deta.sh
+## => @Sandy Pratama
+##
+#################################################

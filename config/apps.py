@@ -3,23 +3,21 @@
 ## Semua config APPs subcommand.
 ## 
 ## => Support: https://trakteer.id/arzhavz/tip
-## => My website: https://arzxh.deta.sh
+## => My website: https://arzxh.deta.dev
 ## => @Sandy Pratama
 ##
 ####################
 
 import typer, os
-from requests import *
 from pathlib import Path
 
 ########## YTDL Section ##########
 """
 
 YouTube downloader menggunakan library Pytube. 
-Kamu juga bisa mengeditnya di /lib/youtube.py.
 
 """
-from lib.youtube import yt
+from lib.youtube import YouTube
 
 YTDL = typer.Typer()
 
@@ -31,7 +29,7 @@ def audio(url: str):
 	"""
 	try: 
 		os.chdir(Path(Path(__file__).parent.parent, "tmp"))
-		yt(url, "audio")
+		YouTube(url, "audio")
 		return
 	except Exception as e:
 		raise e
@@ -43,7 +41,7 @@ def video(url: str):
 	"""
 	try: 
 		os.chdir(Path(Path(__file__).parent.parent, "tmp"))
-		yt(url, "video")
+		YouTube(url, "video")
 		return
 	except Exception as e:
 		raise e
@@ -53,7 +51,6 @@ def video(url: str):
 """
 
 Instagram helper mengikis dari https://downloadgram.org.
-Kamu juga bisa mengeditnya di /lib/instagram.py
 
 """
 from lib.instagram import Instagram
